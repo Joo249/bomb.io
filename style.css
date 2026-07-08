@@ -1,0 +1,297 @@
+/* =====================
+   RESET & BASE
+   ===================== */
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 70%, #2d0038 0%, #0d001a 100%);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* =====================
+   CONTAINER
+   ===================== */
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+/* =====================
+   BOMB
+   ===================== */
+.bomb {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s ease;
+}
+
+.bomb:hover {
+  transform: scale(1.08);
+}
+
+.bomb:active {
+  transform: scale(0.95);
+}
+
+/* Bomb body – pink circle */
+.bomb::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 35%, #ffaed6 0%, #f472b6 40%, #c0185b 100%);
+  box-shadow:
+    0 8px 32px #f472b680,
+    0 0 0 4px #f9a8d480,
+    inset 0 -8px 20px #c0185b60;
+}
+
+/* Shiny highlight on bomb */
+.bomb::after {
+  content: '';
+  position: absolute;
+  bottom: 68px;
+  left: calc(50% - 28px);
+  width: 32px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  transform: rotate(-25deg);
+  pointer-events: none;
+}
+
+/* Fuse (wick) */
+.fuse {
+  position: absolute;
+  bottom: 118px;
+  left: calc(50% + 20px);
+  width: 4px;
+  height: 30px;
+  background: linear-gradient(to top, #a8556a, #d4a96a);
+  border-radius: 4px;
+  transform-origin: bottom center;
+  transform: rotate(25deg);
+}
+
+/* Fuse spark */
+.spark {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff700 0%, #ff9900 60%, transparent 100%);
+  animation: sparkFlicker 0.4s infinite alternate;
+  box-shadow: 0 0 8px 4px #ff990099;
+}
+
+@keyframes sparkFlicker {
+  from { opacity: 1; transform: translateX(-50%) scale(1); }
+  to   { opacity: 0.5; transform: translateX(-50%) scale(0.7); }
+}
+
+/* Bomb wiggle on hover */
+.bomb:hover .fuse {
+  animation: fuseWiggle 0.3s infinite alternate;
+}
+
+@keyframes fuseWiggle {
+  from { transform: rotate(20deg); }
+  to   { transform: rotate(30deg); }
+}
+
+/* =====================
+   EXPLODING STATE
+   ===================== */
+.bomb.exploding {
+  pointer-events: none;
+}
+
+.bomb.exploding::before {
+  animation: bombExplode 0.4s forwards ease-out;
+}
+
+@keyframes bombExplode {
+  0%   { transform: translateX(-50%) scale(1); opacity: 1; }
+  40%  { transform: translateX(-50%) scale(1.5); opacity: 0.8; }
+  100% { transform: translateX(-50%) scale(0); opacity: 0; }
+}
+
+/* =====================
+   EXPLOSION FLASH
+   ===================== */
+.flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, #ffb3d980 0%, transparent 70%);
+  pointer-events: none;
+  animation: flashOut 0.5s forwards ease-out;
+  z-index: 10;
+}
+
+@keyframes flashOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* =====================
+   PARTICLES
+   ===================== */
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* =====================
+   LETTER / SURAT
+   ===================== */
+.letter {
+  position: relative;
+  background: linear-gradient(135deg, #fff0f8 0%, #ffe4f2 100%);
+  border: 2.5px solid #f9a8d4;
+  border-radius: 18px;
+  padding: 44px 52px;
+  max-width: 420px;
+  width: 90vw;
+  box-shadow:
+    0 8px 48px #f472b660,
+    0 2px 12px #00000030;
+  text-align: center;
+  animation: none;
+}
+
+/* Envelope flap decoration */
+.letter::before {
+  content: '💌';
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.8rem;
+  filter: drop-shadow(0 4px 12px #f472b6aa);
+  animation: floatIcon 2.5s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* Decorative hearts */
+.letter::after {
+  content: '❤️ 💖 ❤️';
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+}
+
+.letter p {
+  font-family: 'Caveat', cursive;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #b5175b;
+  letter-spacing: 0.5px;
+  line-height: 1.7;
+  text-shadow: 0 2px 8px #f9a8d460;
+}
+
+/* Hidden state */
+.letter.hidden {
+  display: none;
+}
+
+/* Reveal animation */
+.letter.show {
+  display: block;
+  animation: letterReveal 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes letterReveal {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+  60%  { transform: scale(1.06) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* =====================
+   CLICK HINT TEXT
+   ===================== */
+.hint {
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #f9a8d4;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  animation: hintPulse 1.6s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+/* =====================
+   RESET BUTTON
+   ===================== */
+.reset-btn {
+  display: none;
+  margin-top: 20px;
+  padding: 10px 32px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #f472b6, #c0185b);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px #f472b660;
+  transition: transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.5px;
+}
+
+.reset-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 28px #f472b680;
+}
+
+.reset-btn.show {
+  display: block;
+  animation: letterReveal 0.5s 0.5s both;
+}

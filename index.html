@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pink Bomb – Klik untuk Meledakkan 💣</title>
+    <meta name="description" content="Animasi bom pink lucu – klik untuk meledak dan lihat pesannya!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Bomb element -->
+        <div id="bomb" class="bomb" role="button" aria-label="Klik bom untuk meledakkan" tabindex="0"></div>
+
+        <!-- Hidden letter revealed after explosion -->
+        <div id="letter" class="letter hidden">
+            <p>Apa kamu mengerti? 💕</p>
+        </div>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
